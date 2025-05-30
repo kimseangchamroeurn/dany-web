@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>Student Form</title>
+  <style>
+    .form-container {
+      background-color: rgb(154, 191, 192);
+      width: 500px;
+      padding: 40px;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 3px;
+      margin-bottom: 10px;
+      box-sizing: content-box;
+
+    }
+
+    input[type="radio"] {
+      margin: 5px;
+
+
+    }
+
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 3px;
+      margin-bottom: 10px;
+      box-sizing: content-box;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 4px;
+      margin: 5px;
+    }
+
+    .display {
+      margin-top: 15px;
+      background-color: rgb(251, 251, 251);
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 3px;
+      margin-bottom: 10px;
+      box-sizing: content-box;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <h1>Student Form</h1>
+    <form action="studentForm">
+      <label>First Name: <span class="error">*</span></label>
+      <input type="text" id="firstName" placeholder="First name">
+      <label>Last Name <span class="error">*</span></label>
+      <input type="text" id="lastName" placeholder="Last name">
+      <label>Gender <span class="error">*</span></label>
+      <input type="radio" name="gender" id="genderMale" value="male"> Male
+      <input type="radio" name="gender" id="genderFemale " value="female"> Female
+      <label>Date of birth <span class="error">*</span></label>
+      <input type="date" name="date" id="date" >
+      <label>Phone Number: <span class="error">*</span></label>
+
+      <input type="text" id="phoneNumber" placeholder="Phone Number">
+      <label>Email <span class="error">*</span> </label>
+      <input type="email" name="email" id="email" placeholder="Example@gmail.com">
+      <label>Password <span class="error">*</span></label>
+      <input type="password" name="password" id="password">
+      <label>University <span class="error">*</span>
+        <select id="university">
+          <option value="Paragon International University ">Paragon International University</option>
+          <option value="American University of Phnom Penh">American University of Phnom Penh</option>
+          <option value="CamEd Business School">CamEd Business School</option>
+          <option value="Limkokwing University of Creative Technology">Limkokwing University of Creative Technology
+          </option>
+          <option value="National university of management">National university of management</option>
+          <option value="institute of technology of cambodia">institute of technology of cambodia</option>
+          <option value="ACLEDA Institute of Business">ACLEDA Institute of Business</option>
+          <option value="Kirirom Institute of Technology">iKirirom Institute of Technology</option>
+          <option value="Vanda Institute">Vanda Institute</option>
+          <option value="Norton University">Norton University</option>
+          <option value="Paññāsāstra University of Cambodia">Paññāsāstra University of Cambodia</option>
+          <option value="Phnom Penh International University">Phnom Penh International University</option>
+        </select>
+      </label>
+      <label >Student ID <span class="error">*</span></label>
+      <input type="file" name="photo" id="photo">
+      <label>Year <span class="error">*</span>
+        <select id="year">
+          <option value="year 1">year1</option>
+          <option value="year 2">year2</option>
+          <option value="year 3">year3</option>
+          <option value="year 4">year4</option>
+
+        </select>
+      </label>
+      <label>Message: </label>
+      <textarea id="message" rows="6" placeholder="write message.."></textarea>
+      <button class="btn" type="button" onclick="saveData()">save</button>
+      <button class="btn" type="button" onclick="saveData()">edit</button> 
+      
+      
+    </form>
+    <div class="display" id="displayData" style="display: none;">
+      <p><strong>Display Input</strong></p>
+      <p>First Name: <span id="dFirstName"></span></p>
+      <p>Last Name: <span id="dLastName"></span></p>
+      <p>Gender: <span id="dGender"></span></p>
+      <p>Date of birth: <span id="dDate"></span></p>
+      <p>Phone Number: <span id="dPhone"></span></p>
+      <p>Email: <span id="dEmail"></span></p>
+      <p>Password: <span id="dPassword"></span></p>
+      <p>University : <span id="dUniversity"></span></p>
+       <p>Photo : <span id="dPhoto"></span></p>
+      <p>Year: <span id="dYear"></span></p>
+      <p>Message: <span id="dMessage"></span></p>
+
+    </div>
+  </div>
+  <script>
+    let isEdit = false;
+
+    function saveData() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const phone = document.getElementById('phoneNumber').value.trim();
+      const year = document.getElementById('year').value;
+      const message = document.getElementById('message').value.trim();
+      const gender = document.querySelector('input[name="gender"]:checked');
+      const unversity = document.getElementById('university').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const date = document.getElementById('date').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const photo= document.getElementById('photo').value.trim();
+      if (!firstName || !lastName || !phone || !gender || !university || !email || !date || !password || !photo) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      document.getElementById('dFirstName').innerText = firstName;
+      document.getElementById('dLastName').innerText = lastName;
+      document.getElementById('dGender').innerText = gender.value;
+      document.getElementById('dPhone').innerText = phone;
+      document.getElementById('dYear').innerText = year.split(' ')[1];
+      document.getElementById('dMessage').innerText = message;
+      document.getElementById('dUniversity').innerText = unversity;
+      document.getElementById('dEmail').innerText = email;
+      document.getElementById('dDate').innerText = date;
+      document.getElementById('dPassword').innerText = password;
+      document.getElementById('dPhoto').innerText = photo;
+      document.getElementById('displayData').style.display = 'block';
+
+      if (!isEdit) {
+        document.getElementById('studentForm').reset();
+      }
+
+      isEdit = false;
+    }
+
+    function editData() {
+      const firstName = document.getElementById('dFirstName').innerText;
+      const lastName = document.getElementById('dLastName').innerText;
+      const gender = document.getElementById('dGender').innerText;
+      const phone = document.getElementById('dPhone').innerText;
+      const year = "Year " + document.getElementById('dYear').innerText;
+      const message = document.getElementById('dMessage').innerText;
+      const university = document.getElementById('dUniversity').innerText;
+      const email = document.getElementById('dEmail').innerText;
+      const Date = document.getElementById('dDate').innerText;
+      const password = document.getElementById('dPassword').innerText;
+      const photo= document.getElementById('dPhoto').innerText;
+      document.getElementById('firstName').value = firstName;
+      document.getElementById('lastName').value = lastName;
+      document.getElementById('phone').value = phone;
+      document.getElementById('year').value = year;
+      document.getElementById('message').value = message;
+      document.getElementById('university').value = university;
+      document.getElementById('Email').value = email;
+      document.getElementById('date').value = date;
+      document.getElementById('password').value = password;
+       document.getElementById('photo').value = photo;
+
+
+      if (gender === "male") {
+        document.getElementById('genderMale').checked = true;
+      } else {
+        document.getElementById('genderFemale').checked = true;
+      }
+
+      isEdit = true;
+    }
+  </script>
+  
+</body>
+
+</html>
