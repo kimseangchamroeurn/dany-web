@@ -1,215 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student Form</title>
-  <style>
-    .form-container {
-      background-color: rgb(154, 191, 192);
-      width: 500px;
-      padding: 40px;
-      margin: 20px auto;
-      border-radius: 8px;
-    }
-    h1 { text-align: center; }
-    label { display: block; margin: 10px 0 5px; }
-    input[type="text"], select, textarea, 
-    input[type="email"], input[type="password"], 
-    input[type="date"], input[type="file"] {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    input[type="radio"] { margin: 5px; }
-    .error { color: red; font-size: 12px; }
-    .btn {
-      width: 48%;
-      padding: 8px;
-      margin: 5px 1%;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .btn:hover { background-color: #45a049; }
-    .display {
-      margin-top: 15px;
-      background-color: rgb(251, 251, 251);
-      padding: 10px;
-      border-radius: 4px;
-    }
-    .radio-group { margin-bottom: 10px; }
-  </style>
+    <title>Student Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .form-container {
+            background-color: #9ac2c0;
+            width: 500px;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 8px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
-  <div class="form-container">
-    <h1>Student Form</h1>
-    
-    <form id="studentForm" action="https://formsubmit.co/seangbabe@gmail.com" method="POST" enctype="multipart/form-data">
-      <!-- FormSubmit configuration -->
-      <input type="hidden" name="_subject" value="New Student Form Submission">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html"> <!-- Add your thank you page -->
-      
-      <!-- Student Information -->
-      <label>First Name: <span class="error">*</span></label>
-      <input type="text" name="First Name" id="firstName" placeholder="First name" required>
-      
-      <label>Last Name: <span class="error">*</span></label>
-      <input type="text" name="Last Name" id="lastName" placeholder="Last name" required>
-      
-      <label>Gender: <span class="error">*</span></label>
-      <div class="radio-group">
-        <input type="radio" name="Gender" id="genderMale" value="Male" required> Male
-        <input type="radio" name="Gender" id="genderFemale" value="Female"> Female
-      </div>
-      
-      <label>Date of birth: <span class="error">*</span></label>
-      <input type="date" name="Date of Birth" id="date" required>
-      
-      <label>Phone Number: <span class="error">*</span></label>
-      <input type="text" name="Phone Number" id="phoneNumber" placeholder="Phone Number" required>
-      
-      <label>Email: <span class="error">*</span></label>
-      <input type="email" name="Email" id="email" placeholder="Example@gmail.com" required>
-      
-      <label>Password: <span class="error">*</span></label>
-      <input type="password" name="Password" id="password" required>
-      
-      <label>University: <span class="error">*</span></label>
-      <select name="University" id="university" required>
-        <option value="">-- Select University --</option>
-        <option value="Paragon International University">Paragon International University</option>
-        <option value="American University of Phnom Penh">American University of Phnom Penh</option>
-        <option value="National University of Management">National University of Management</option>
-        <option value="Royal University of Phnom Penh">Royal University of Phnom Penh</option>
-        <option value="Cambodia University of Technology and Science">Cambodia University of Technology and Science</option>
-      </select>
-      
-      <label>Student ID Photo: <span class="error">*</span></label>
-      <input type="file" name="Student Photo" id="photo" required>
-      
-      <label>Year: <span class="error">*</span></label>
-      <select name="Year" id="year" required>
-        <option value="">-- Select Year --</option>
-        <option value="Year 1">Year 1</option>
-        <option value="Year 2">Year 2</option>
-        <option value="Year 3">Year 3</option>
-        <option value="Year 4">Year 4</option>
-      </select>
-      
-      <label>Message:</label>
-      <textarea name="Message" id="message" rows="6" placeholder="Write message.."></textarea>
-      
-      <button class="btn" type="submit">Submit</button>
-      <button class="btn" type="button" onclick="editData()" style="background-color: #f44336;">Edit</button>
-    </form>
-    
-    <div class="display" id="displayData" style="display: none;">
-      <p><strong>Display Input</strong></p>
-      <p>First Name: <span id="dFirstName"></span></p>
-      <p>Last Name: <span id="dLastName"></span></p>
-      <p>Gender: <span id="dGender"></span></p>
-      <p>Date of birth: <span id="dDate"></span></p>
-      <p>Phone Number: <span id="dPhone"></span></p>
-      <p>Email: <span id="dEmail"></span></p>
-      <p>Password: <span id="dPassword"></span></p>
-      <p>University: <span id="dUniversity"></span></p>
-      <p>Photo: <span id="dPhoto"></span></p>
-      <p>Year: <span id="dYear"></span></p>
-      <p>Message: <span id="dMessage"></span></p>
+    <div class="form-container">
+        <h1>Student Registration</h1>
+        <form action="https://formsubmit.co/seangbabe@gmail.com" method="POST">
+            <input type="text" name="firstName" placeholder="First Name" required>
+            <input type="text" name="lastName" placeholder="Last Name" required>
+            <input type="date" name="dateOfBirth" required>
+            <input type="tel" name="phone" placeholder="Phone">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Submit</button>
+        </form>
     </div>
-  </div>
-
-  <script>
-    let isEdit = false;
-
-    // Handle form submission
-    document.getElementById("studentForm").addEventListener("submit", function(e) {
-      e.preventDefault(); // Prevent default submission
-      saveData(); // Display data locally
-      
-      // Create FormData object to handle file uploads
-      const formData = new FormData(this);
-      
-      // Submit form using fetch API
-      fetch(this.action, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          alert('Form submitted successfully!');
-          this.reset();
-        } else {
-          alert('Error submitting form. Please try again.');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error submitting form. Please try again.');
-      });
-    });
-
-    function saveData() {
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const phone = document.getElementById('phoneNumber').value.trim();
-      const year = document.getElementById('year').value;
-      const message = document.getElementById('message').value.trim();
-      const gender = document.querySelector('input[name="Gender"]:checked');
-      const university = document.getElementById('university').value;
-      const email = document.getElementById('email').value.trim();
-      const date = document.getElementById('date').value;
-      const password = document.getElementById('password').value.trim();
-      const photo = document.getElementById('photo').value;
-      
-      if (!firstName || !lastName || !phone || !gender || !university || !email || !date || !password || !photo) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      // Display data
-      document.getElementById('dFirstName').innerText = firstName;
-      document.getElementById('dLastName').innerText = lastName;
-      document.getElementById('dGender').innerText = gender.value;
-      document.getElementById('dDate').innerText = date;
-      document.getElementById('dPhone').innerText = phone;
-      document.getElementById('dEmail').innerText = email;
-      document.getElementById('dPassword').innerText = password;
-      document.getElementById('dUniversity').innerText = university;
-      document.getElementById('dPhoto').innerText = photo.split('\\').pop();
-      document.getElementById('dYear').innerText = year.split(' ')[1];
-      document.getElementById('dMessage').innerText = message || "N/A";
-      
-      document.getElementById('displayData').style.display = 'block';
-      if (!isEdit) document.getElementById('studentForm').reset();
-      isEdit = false;
-    }
-
-    function editData() {
-      isEdit = true;
-      document.getElementById('firstName').value = document.getElementById('dFirstName').innerText;
-      document.getElementById('lastName').value = document.getElementById('dLastName').innerText;
-      
-      const gender = document.getElementById('dGender').innerText;
-      if (gender === "Male") document.getElementById('genderMale').checked = true;
-      else if (gender === "Female") document.getElementById('genderFemale').checked = true;
-      
-      document.getElementById('date').value = document.getElementById('dDate').innerText;
-      document.getElementById('phoneNumber').value = document.getElementById('dPhone').innerText;
-      document.getElementById('email').value = document.getElementById('dEmail').innerText;
-      document.getElementById('password').value = document.getElementById('dPassword').innerText;
-      document.getElementById('university').value = document.getElementById('dUniversity').innerText;
-      document.getElementById('year').value = "Year " + document.getElementById('dYear').innerText;
-      document.getElementById('message').value = document.getElementById('dMessage').innerText;
-      
-      document.getElementById('displayData').style.display = 'none';
-    }
-  </script>
 </body>
 </html>
