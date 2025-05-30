@@ -48,12 +48,9 @@
   <div class="form-container">
     <h1>Student Form</h1>
     
-    <form id="studentForm" action="https://formsubmit.co/seangbabe@gmail.com" method="POST" enctype="multipart/form-data">
-      <!-- FormSubmit configuration -->
-      <input type="hidden" name="_subject" value="New Student Form Submission">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html"> <!-- Add your thank you page -->
+    <form action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="43dd4a6f-391c-4bfa-bc5e-ac8db6ad3559">
+  <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you.html"> <!-- Add your thank you page -->
       
       <!-- Student Information -->
       <label>First Name: <span class="error">*</span></label>
