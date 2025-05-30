@@ -14,7 +14,7 @@
     label { display: block; margin: 10px 0 5px; }
     input[type="text"], select, textarea, 
     input[type="email"], input[type="password"], 
-    input[type="date"], input[type="file"] {
+    input[type="date"] {
       width: 100%;
       padding: 8px;
       margin-bottom: 10px;
@@ -48,11 +48,10 @@
   <div class="form-container">
     <h1>Student Form</h1>
     
-    <form action="https://api.web3forms.com/submit" method="POST">
-  <input type="hidden" name="access_key" value="43dd4a6f-391c-4bfa-bc5e-ac8db6ad3559">
-  <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you.html"> <!-- Add your thank you page -->
+    <form id="studentForm" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="43dd4a6f-391c-4bfa-bc5e-ac8db6ad3559">
+      <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you.html">
       
-      <!-- Student Information -->
       <label>First Name: <span class="error">*</span></label>
       <input type="text" name="First Name" id="firstName" placeholder="First name" required>
       
@@ -87,9 +86,6 @@
         <option value="Cambodia University of Technology and Science">Cambodia University of Technology and Science</option>
       </select>
       
-      <label>Student ID Photo: <span class="error">*</span></label>
-      <input type="file" name="Student Photo" id="photo" required>
-      
       <label>Year: <span class="error">*</span></label>
       <select name="Year" id="year" required>
         <option value="">-- Select Year --</option>
@@ -116,7 +112,6 @@
       <p>Email: <span id="dEmail"></span></p>
       <p>Password: <span id="dPassword"></span></p>
       <p>University: <span id="dUniversity"></span></p>
-      <p>Photo: <span id="dPhoto"></span></p>
       <p>Year: <span id="dYear"></span></p>
       <p>Message: <span id="dMessage"></span></p>
     </div>
@@ -125,87 +120,94 @@
   <script>
     let isEdit = false;
 
-    // Handle form submission
-    document.getElementById("studentForm").addEventListener("submit", function(e) {
-      e.preventDefault(); // Prevent default submission
-      saveData(); // Display data locally
+    document.getElementById("studentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
       
-      // Create FormData object to handle file uploads
-      const formData = new FormData(this);
+      // Validate before submission
+      if (!validateForm()) return;
       
-      // Submit form using fetch API
-      fetch(this.action, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
+      try {
+        const formData = new FormData(e.target);
+        const response = await fetch(e.target.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
         if (response.ok) {
+          saveData();
           alert('Form submitted successfully!');
-          this.reset();
+          e.target.reset();
         } else {
-          alert('Error submitting form. Please try again.');
+          throw new Error('Form submission failed');
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error:', error);
         alert('Error submitting form. Please try again.');
-      });
+      }
     });
 
-    function saveData() {
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const phone = document.getElementById('phoneNumber').value.trim();
-      const year = document.getElementById('year').value;
-      const message = document.getElementById('message').value.trim();
-      const gender = document.querySelector('input[name="Gender"]:checked');
-      const university = document.getElementById('university').value;
-      const email = document.getElementById('email').value.trim();
-      const date = document.getElementById('date').value;
-      const password = document.getElementById('password').value.trim();
-      const photo = document.getElementById('photo').value;
+    function validateForm() {
+      const requiredFields = [
+        'firstName', 'lastName', 'phoneNumber', 
+        'email', 'password', 'date', 'university', 'year'
+      ];
       
-      if (!firstName || !lastName || !phone || !gender || !university || !email || !date || !password || !photo) {
-        alert("Please fill in all required fields.");
-        return;
+      for (const fieldId of requiredFields) {
+        const field = document.getElementById(fieldId);
+        if (!field.value.trim()) {
+          alert(`Please fill in ${field.placeholder || field.name}`);
+          field.focus();
+          return false;
+        }
       }
+      
+      if (!document.querySelector('input[name="Gender"]:checked')) {
+        alert("Please select gender");
+        return false;
+      }
+      
+      return true;
+    }
 
-      // Display data
-      document.getElementById('dFirstName').innerText = firstName;
-      document.getElementById('dLastName').innerText = lastName;
-      document.getElementById('dGender').innerText = gender.value;
-      document.getElementById('dDate').innerText = date;
-      document.getElementById('dPhone').innerText = phone;
-      document.getElementById('dEmail').innerText = email;
-      document.getElementById('dPassword').innerText = password;
-      document.getElementById('dUniversity').innerText = university;
-      document.getElementById('dPhoto').innerText = photo.split('\\').pop();
-      document.getElementById('dYear').innerText = year.split(' ')[1];
-      document.getElementById('dMessage').innerText = message || "N/A";
+    function saveData() {
+      document.getElementById('dFirstName').textContent = document.getElementById('firstName').value;
+      document.getElementById('dLastName').textContent = document.getElementById('lastName').value;
+      document.getElementById('dGender').textContent = 
+        document.querySelector('input[name="Gender"]:checked').value;
+      document.getElementById('dDate').textContent = document.getElementById('date').value;
+      document.getElementById('dPhone').textContent = document.getElementById('phoneNumber').value;
+      document.getElementById('dEmail').textContent = document.getElementById('email').value;
+      document.getElementById('dPassword').textContent = document.getElementById('password').value;
+      document.getElementById('dUniversity').textContent = document.getElementById('university').value;
+      document.getElementById('dYear').textContent = document.getElementById('year').value;
+      document.getElementById('dMessage').textContent = document.getElementById('message').value || "N/A";
       
       document.getElementById('displayData').style.display = 'block';
-      if (!isEdit) document.getElementById('studentForm').reset();
-      isEdit = false;
     }
 
     function editData() {
       isEdit = true;
-      document.getElementById('firstName').value = document.getElementById('dFirstName').innerText;
-      document.getElementById('lastName').value = document.getElementById('dLastName').innerText;
+      const display = document.getElementById('displayData');
       
-      const gender = document.getElementById('dGender').innerText;
-      if (gender === "Male") document.getElementById('genderMale').checked = true;
-      else if (gender === "Female") document.getElementById('genderFemale').checked = true;
+      // Copy displayed values back to form
+      document.getElementById('firstName').value = document.getElementById('dFirstName').textContent;
+      document.getElementById('lastName').value = document.getElementById('dLastName').textContent;
       
-      document.getElementById('date').value = document.getElementById('dDate').innerText;
-      document.getElementById('phoneNumber').value = document.getElementById('dPhone').innerText;
-      document.getElementById('email').value = document.getElementById('dEmail').innerText;
-      document.getElementById('password').value = document.getElementById('dPassword').innerText;
-      document.getElementById('university').value = document.getElementById('dUniversity').innerText;
-      document.getElementById('year').value = "Year " + document.getElementById('dYear').innerText;
-      document.getElementById('message').value = document.getElementById('dMessage').innerText;
+      const gender = document.getElementById('dGender').textContent;
+      document.getElementById(gender === 'Male' ? 'genderMale' : 'genderFemale').checked = true;
       
-      document.getElementById('displayData').style.display = 'none';
+      document.getElementById('date').value = document.getElementById('dDate').textContent;
+      document.getElementById('phoneNumber').value = document.getElementById('dPhone').textContent;
+      document.getElementById('email').value = document.getElementById('dEmail').textContent;
+      document.getElementById('password').value = document.getElementById('dPassword').textContent;
+      document.getElementById('university').value = document.getElementById('dUniversity').textContent;
+      document.getElementById('year').value = document.getElementById('dYear').textContent;
+      document.getElementById('message').value = document.getElementById('dMessage').textContent;
+      
+      display.style.display = 'none';
     }
   </script>
 </body>
