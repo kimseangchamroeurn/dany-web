@@ -50,8 +50,8 @@
     
     <form id="studentForm" action="https://api.web3forms.com/submit" method="POST">
       <input type="hidden" name="access_key" value="43dd4a6f-391c-4bfa-bc5e-ac8db6ad3559">
-      <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you.html">
-      
+      <input type="hidden" name="redirect" value="https://web3forms.com/success">
+
       <label>First Name: <span class="error">*</span></label>
       <input type="text" name="First Name" id="firstName" placeholder="First name" required>
       
@@ -118,35 +118,12 @@
   </div>
 
   <script>
-    let isEdit = false;
-
-    document.getElementById("studentForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      
-      // Validate before submission
-      if (!validateForm()) return;
-      
-      try {
-        const formData = new FormData(e.target);
-        const response = await fetch(e.target.action, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          saveData();
-          alert('Form submitted successfully!');
-          e.target.reset();
-        } else {
-          throw new Error('Form submission failed');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error submitting form. Please try again.');
+    document.getElementById("studentForm").addEventListener("submit", function(e) {
+      if (!validateForm()) {
+        e.preventDefault();
+        return false;
       }
+      saveData();
     });
 
     function validateForm() {
@@ -189,16 +166,11 @@
     }
 
     function editData() {
-      isEdit = true;
       const display = document.getElementById('displayData');
-      
-      // Copy displayed values back to form
       document.getElementById('firstName').value = document.getElementById('dFirstName').textContent;
       document.getElementById('lastName').value = document.getElementById('dLastName').textContent;
-      
       const gender = document.getElementById('dGender').textContent;
       document.getElementById(gender === 'Male' ? 'genderMale' : 'genderFemale').checked = true;
-      
       document.getElementById('date').value = document.getElementById('dDate').textContent;
       document.getElementById('phoneNumber').value = document.getElementById('dPhone').textContent;
       document.getElementById('email').value = document.getElementById('dEmail').textContent;
